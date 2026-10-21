@@ -1,0 +1,70 @@
+Git Rescue — the commands, on one page
+=======================================
+
+STOP FIRST (any disaster)
+  git status                    what state am I in?
+  git log --oneline -5          where is HEAD?
+  cp -r myrepo myrepo-backup    a dumb copy beats a clever rescue
+
+DELETED BRANCH
+  git reflog                    find the branch tip's SHA
+  git branch <name> <sha>       recreate the branch there
+  git switch <name>             and check the files are back
+
+RESET TOO FAR
+  git reflog                    find the pre-reset SHA
+  git rev-parse ORIG_HEAD       reset/merge/rebase leave it behind
+  git reset --hard ORIG_HEAD    go back (or use the SHA from reflog)
+  Reset modes: --soft moves HEAD only (changes left staged),
+  --mixed (the default) unstages them, --hard rewrites the files.
+
+COMMIT ON THE WRONG BRANCH
+  git branch <right-branch>     FIRST: pin the commit where it sits
+  git reset --hard HEAD~1       THEN rewind the wrong branch
+  git switch <right-branch>     the work is there
+
+MERGE OR REBASE IN PROGRESS
+  git merge --abort             only while the merge is unfinished
+  git rebase --abort            only while the rebase is stopped/run
+  git status                    tells you which state you are in
+
+COMPLETED BAD REBASE
+  git reflog                    find the "rebase (start)" entry;
+                                the entry below it is the old tip
+  git reset --hard ORIG_HEAD    or reset to that SHA
+
+DROPPED STASH
+  git fsck --unreachable        list dangling objects
+  git log -1 <sha>              read each dangling commit's message
+  git stash apply <sha>         the stash whose message matches
+  (apply keeps a stash entry; pop applies and drops it)
+
+FILE DELETED COMMITS AGO
+  git log --oneline --all -- <path>          its life, in commits
+  git log --diff-filter=D --oneline -- <path>  the commit that deleted it
+  git restore --source=<deletion>~1 -- <path>  back to the working tree
+  git checkout <deletion>~1 -- <path>          same bytes, but staged
+
+FIND THE COMMIT THAT BROKE IT
+  git bisect start
+  git bisect bad                HEAD is broken
+  git bisect good <sha>         this old commit worked
+  ../tally-check.sh             (your test) at each stop...
+  git bisect good | bad         ...until it names the first bad commit
+  git bisect run <script>       the same hunt, automated
+  git bisect reset              back to where you started
+
+A MISTAKE ALREADY PUSHED
+  git revert <sha>              shared branch? new commit, push it.
+                                History keeps both; nobody rewrites.
+  git reset --hard <sha> + git push --force-with-lease
+                                only on a branch that is yours alone —
+                                everyone else's copy still holds the
+                                old commit, and their next push can
+                                resurrect it (proven in the guide).
+
+POINT OF NO RETURN (never run on a repo you care about)
+  git reflog expire --expire=now --expire-unreachable=now --all
+  git gc --prune=now            after this, dangling objects are gone
+  And no command at all recovers work that was never staged
+  or committed. Git cannot lose what it never had — or save it.

@@ -1,0 +1,24 @@
+site_name: Git Rescue for Mere Mortals
+site_description: Plain-language recovery from git disasters. Deleted branches, bad resets, wrong-branch commits, dropped stashes, files deleted commits ago, bisect hunts, and pushed mistakes, each planted in a lab repo and rescued on the record, proven byte for byte.
+site_url: https://paulsullivan33-dev.github.io/git-rescue-for-mere-mortals/
+
+# Guides live at the repo root (nice for GitHub browsing).
+# The deploy workflow copies them into docs/ before building.
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - What Git Rescue Is: what-git-rescue-is.md
+  - The Reflog and Deleted Branches: reflog-and-deleted-branches.md
+  - Reset, Three Ways: reset-three-ways.md
+  - A Commit on the Wrong Branch: wrong-branch.md
+  - Merges and Rebases Gone Wrong: merge-and-rebase.md
+  - The Stash Graveyard: the-stash-graveyard.md
+  - Restoring a File Deleted Commits Ago: restoring-a-deleted-file.md
+  - "Bisect: Finding the Commit That Broke It": bisect.md
+  - "Pushed Mistakes: Revert or Rewrite": pushed-mistakes.md
+  - The Edge of Rescue: the-edge-of-rescue.md
+  - The Rescue Table: the-rescue-table.md
+  - Glossary: glossary.md
+  - Writing Criteria: criteria.md
